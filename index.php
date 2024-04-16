@@ -1,6 +1,7 @@
 <?php 
     include('assets/connection/connection.php');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,14 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
-<body>
+    <?php 
+        if(isset($_GET['page-nr'])){
+            $id = $_GET['page-nr'];
+        }else{
+            $id = 1;
+        }
+    ?>
+<body id="<?php echo $id; ?>">
 
     <!-- =========== START OF SIDEBAR ============ -->
     <section id="sidebar">
@@ -20,7 +28,7 @@
             <div class="left-section">
             <img src="assets/images/oshc_logo_new.png" class="brand-logo">
             </div>
-            <span class="text">Occupational Safety and Health</span>
+            <span class="text">Occupational Safety and Health Center</span>
         </a>
 
         <ul class="side-menu top">
@@ -207,6 +215,8 @@
                             <h3>Ticket Overview</h3>
                             <i class="fa-solid fa-chart-pie"></i>
                         </div>
+                        <hr>
+                        <br>
                         <div class="bar-chart">
                             <canvas id="pieChart" class="pieChart"></canvas>
                         </div>
@@ -217,14 +227,14 @@
                             <h3>Filter Tickets</h3>
                             <i class="fa-solid fa-filter"></i>
                         </div>
+                        <hr>
+                        <br>
                         <div class="form-filter">
                             <form action="" method="POST">
                                 <label for="FORMStartDate">Start Date</label>
                                 <input type="date" name="FORMStartDate" id="FORMStartDate">
-                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                 <label for="FORMEndDate">End Date</label>
                                 <input type="date" name="FORMEndDate" id="FORMEndDate">
-                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                 <label for="FORMDivision">Division</label>
                                 <select name="FORMDivision" id="FORMDivision">
                                     <?php 
@@ -238,19 +248,147 @@
                                     
                                     ?>
                                 </select>
-                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <div class="filter">
                                 <button type="submit" name="FORMFilter">Filter</button>
+                                </div>
                             </form>
                         </div>
-                                    <br>
                         <div class="table">
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Ticket ID</th>
                                         <th>Division</th>
+                                        <th>Employee Name</th>
+                                        <th>Issue Type</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    <?php 
+                                        $start = 0;
+                                        $rows_per_page = 8;
+
+                                        $record = "SELECT * FROM tickets";
+                                        $result = $conn->query($record);
+
+                                        $num_rows = $result->num_rows;
+
+                                        $pages = ceil($num_rows / $rows_per_page);
+
+                                        
+                                        if(isset($_GET['page-nr'])){
+                                            $page = $_GET['page-nr'] - 1;
+                                            $start = $page * $rows_per_page;
+                                        }
+
+
+                                        $queryDisplay = "SELECT * FROM tickets LIMIT $start, $rows_per_page";
+                                        $sqlDisplay = $conn->query($queryDisplay);
+
+                                        if($sqlDisplay == true) {
+                                            $count = mysqli_num_rows($sqlDisplay);
+
+                                            if($count > 0){
+
+                                                while($row = mysqli_fetch_assoc($sqlDisplay)) {
+                                                    $division = $row['division'];
+                                                    $tixID = $row['ticket_id'];
+                                                    $name = $row['name'];
+                                                    $issue = $row['issue_type'];
+                                                    $status = $row['status'];
+                                                    $date = $row['date_time'];
+                                                    $division = $row['division'];
+
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $tixID;?></td>
+                                                        <td><?php echo $division;?></td>
+                                                        <td><?php echo $name;?></td>
+                                                        <td><?php echo $issue;?></td>
+                                                        <td><?php echo $status;?></td>
+                                                        <td><?php echo $date;?></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+
+                                            }else{
+                                                echo "<td> There is no data to be Displayed </td>";
+                                            }
+                                            
+
+                                        }else {
+                                            echo "<td>Error Displaying Data</td>";
+                                        }
+                                    
+                                    ?>
+                                    </tr>
+                                </tbody>
                             </table>
+                            <br>
+                            <hr>
+                            <br>
+                            <div id="<?php echo $id; ?>" class="page-container">
+                            <div class="page-info">
+
+                            <?php 
+                                if(!isset($_GET['page-nr'])){
+                                    $page = 1;
+                                }else{
+                                    $page = $_GET['page-nr'];
+                                }
+                            ?>
+                                Showing <strong><?php echo $page;?></strong> of <?php echo $pages;?> pages
+                            </div>
+
+                            <div class="pagination">
+                                <a href="?page-nr=1">First</a>
+
+                                <?php 
+                                    if(isset($_GET['page-nr']) && $_GET['page-nr'] > 1) {
+                                        ?>
+                                        <a href="?page-nr=<?php echo $_GET['page-nr'] - 1; ?>">Previous</a>
+                                    <?php
+                                    }else{
+                                        ?>
+                                        <a> Previous</a>
+                                        <?php
+                                    }
+                                ?>
+
+                                <div class="page-numbers">
+
+                                    <?php 
+                                        for($counter = 1; $counter <= $pages; $counter++){
+                                            ?>
+                                                <a href="?page-nr=<?php echo $counter?>"><?php echo $counter; ?></a>
+                                            <?php
+                                        }
+                                    ?>
+                                </div>
+
+                                <?php
+                                    if(!isset($_GET['page-nr'])){
+                                        ?>
+                                            <a href="?page-nr=2">Next</a>
+                                        <?php
+                                    }else{
+                                        if($_GET['page-nr'] >= $pages){
+                                            ?>
+                                            <a>Next</a>
+                                            <?php
+                                        }else{
+                                            ?>
+                                            <a href="?page-nr=<?php echo $_GET['page-nr'] + 1; ?>">Next</a>
+                                            <?php
+                                        }
+                                    }
+                                ?>
+                                <!-- <a href="">Next</a> -->
+                                <a href="?page-nr=<?php echo $pages;?>">Last</a>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -295,6 +433,11 @@
                 // Add options here if needed
             }
         });
+
+        const links = document.querySelectorAll('.page-numbers > a');
+        const bodyId = parseInt(document.body.id) - 1;
+        links[bodyId].classList.add("active");
+
     </script>
     
 </body>

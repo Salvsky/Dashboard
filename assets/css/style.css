@@ -56,7 +56,7 @@ body {
 }
 
 #sidebar .brand {
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 700;
     height: 56px;
     display: flex;
@@ -395,6 +395,51 @@ body {
     color: var(--light);
 }
 
+#content main .table-data .todo .form-filter{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+#content main .table-data .todo .form-filter label {
+    font-size: 1rem;
+    padding: 0 0 0 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: var(--poppins);
+}
+
+#content main .table-data .todo .form-filter input {
+    max-width: 100%;
+    font-size: 1rem;
+    font-family: var(--poppins);
+}
+
+#content main .table-data .todo .form-filter select {
+    padding: 5px 10px;
+}
+
+#content main .table-data .todo .form-filter .filter {
+    text-align: center;
+}
+
+#content main .table-data .todo .form-filter .filter button {
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    margin: 15px 0;
+    cursor: pointer;
+    background: var(--blue);
+    color: var(--light);
+    border: none;
+}
+
+#content main .table-data .todo .form-filter .filter button:active {
+    background-color: #2962ff;
+}
+
+
 /* dito ka magstart ng pagbabago */
 
 #content main .box-info li .text h3 {
@@ -442,6 +487,37 @@ body {
 }
 
 
+.page-container{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 2rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.pagination a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--dark);
+    padding: 5px 15px;
+    border: thin solid #555;
+    font-size: 14px;
+}
+
+.pagination a.active {
+    background-color: var(--blue);
+    color: var(--light);
+    border: thin solid var(--blue);
+}
+
+.pagination a:focus {
+    border: 1px solid var(--dark);
+}
 
 
 #content main .table-data .order table  {
