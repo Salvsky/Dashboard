@@ -400,7 +400,6 @@ body {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
-    
 }
 
 #content main .table-data .todo .form-filter label {
@@ -579,5 +578,26 @@ body {
         color: var(--light);
         background: var(--red);
     }
+
+}
+
+table{
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.table table tr th{
+    font-size: 1rem;
+    background-color: var(--dark-grey);
+    padding: 5px 10px;
+}
+
+.table table tr th:nth-child(1), td:nth-child(1){
+    text-align: center;
+}
+
+.table table tr td {
+    padding: 5px 10px;
+    font-size: 14px;
 
 }
