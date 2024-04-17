@@ -20,7 +20,7 @@
             $id = 1;
         }
     ?>
-<body id="<?php echo $id; ?>">
+<body>
 
     <!-- =========== START OF SIDEBAR ============ -->
     <section id="sidebar">

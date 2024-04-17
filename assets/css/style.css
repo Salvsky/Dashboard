@@ -43,7 +43,7 @@ body {
     left: 0;
     width: 300px;
     height: 100%;
-    background: var(--light);
+    background: var(--dark);
     font-family: var(--lato);
     z-index: 1000;
     transition: 0.3s ease;
@@ -56,6 +56,7 @@ body {
 }
 
 #sidebar .brand {
+    background-color: var(--light);
     font-size: 22px;
     font-weight: 700;
     height: 56px;
@@ -119,12 +120,12 @@ body {
 #sidebar .side-menu li a {
     width: 100%;
     height: 100%;
-    background: var(--light);
+    background: var(--dark);
     display: flex;
     align-items: center;
     border-radius: 48px;
     font-size: 1rem;
-    color: var(--dark);
+    color: var(--light);
     white-space: nowrap;
     overflow-x: hidden;
 }
@@ -171,12 +172,13 @@ body {
 /* START OF NAVBAR */
 #content nav {
     height: 56px;
-    background: var(--light);
+    background: var(--dark);
     padding: 0 24px;
     display: flex;
     align-items: center;
     gap: 24px;
     font-family: var(--lato);
+    color: var(--light);
 }
 
 #content nav::before {
@@ -192,7 +194,7 @@ body {
 }
 
 #content nav a {
-    color: var(--dark);
+    color: var(--light);
 }
 
 #content nav .fa-solid.fa-bars {
@@ -476,13 +478,14 @@ body {
 
 #content main .table-data .order {
     flex: 1;
+    max-width: 400px;
 }
 
 
 .bar-chart {
     min-width: fit-content;
     min-height: fit-content;
-    max-width: 600px;
+    max-width: 400px;
 }
 
 
@@ -605,3 +608,65 @@ table{
 .table table tr:nth-of-type(2n){
     background-color: rgba(16, 16, 16, 0.1);
 }
+
+.progress-bars {
+    display: flex; 
+    margin-bottom: 20px; 
+  }
+
+  .progress-bar {
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin-right: 10px; 
+    position: relative;
+    width: calc((var(--data-progress) / var(--total-count)) * 100%); 
+    max-width: 100%;
+    
+
+  }
+  
+  .progress-bar.open {
+    display: flex;
+    background-color: #2e7d32;
+  }
+  
+  .progress-bar.onGoing {
+    display: flex;
+    background-color: #f9ca24;
+  }
+  
+  .progress-bar.closed {
+    display: flex;
+    background-color: #d50000;
+  }
+
+  .progress-bar .label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .progress-bar .value {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+
+  .progress-bars span {
+    font-size: 20px;
+    font-weight: 600;
+    min-width: 15%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .prog-container{
+    flex: 1;
+    background-color: var(--dark-grey);
+  }

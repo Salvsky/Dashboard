@@ -149,8 +149,7 @@
                             <label for="FORMDivision">Division</label>
                             <select name="FORMDivision" id="FORMDivision">
                                 <?php 
-                                include('connection/connection.php');
-
+                                
                                 $querySelect = "SELECT DISTINCT division FROM tickets";
                                 $categories = mysqli_query($conn, $querySelect);
                                 while($result = mysqli_fetch_array($categories)) { 
@@ -164,180 +163,41 @@
                             </div>
                         </form>
                     </div>
-                    <div class="table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Ticket ID</th>
-                                    <th>Division</th>
-                                    <th>Employee Name</th>
-                                    <th>Issue Type</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php 
-                                    $start = 0;
-                                    $rows_per_page = 8;
 
-                                    $record = "SELECT * FROM tickets";
-                                    $result = $conn->query($record);
+                    <br>
 
-                                    $num_rows = $result->num_rows;
+                    <div class="hr-bar-graph">
+                        <div class="hr-bar-graph">
+                        <div class="progress-bars">
+                            <span class="label">Open</span>
 
-                                    $pages = ceil($num_rows / $rows_per_page);
-
-                                    
-                                    if(isset($_GET['page-nr'])){
-                                        $page = $_GET['page-nr'] - 1;
-                                        $start = $page * $rows_per_page;
-                                    }
-
-
-                                    $queryDisplay = "SELECT * FROM tickets LIMIT $start, $rows_per_page";
-                                    $sqlDisplay = $conn->query($queryDisplay);
-
-                                    if($sqlDisplay == true) {
-                                        $count = mysqli_num_rows($sqlDisplay);
-
-                                        if($count > 0){
-
-                                            if(!isset($_POST['FORMFilter'])){
-
-                                            while($row = mysqli_fetch_assoc($sqlDisplay)) {
-                                                $division = $row['division'];
-                                                $tixID = $row['ticket_id'];
-                                                $name = $row['name'];
-                                                $issue = $row['issue_type'];
-                                                $status = $row['status'];
-                                                $date = $row['date_time'];
-
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $tixID;?></td>
-                                                    <td><?php echo $division;?></td>
-                                                    <td><?php echo $name;?></td>
-                                                    <td><?php echo $issue;?></td>
-                                                    <td><?php echo $status;?></td>
-                                                    <td><?php echo $date;?></td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            }else{
-                                                $filtered_start_date = $_POST["FORMStartDate"];
-                                                $filtered_end_date = $_POST["FORMEndDate"];
-                                                $filtered_division = $_POST["FORMDivision"];
-                                            
-                                                if(empty($filtered_start_date) || empty($filtered_end_date) || $filtered_end_date < $filtered_start_date){
-                                                    echo "<script>alert('Invalid date range')</script>";
-                                                } else {
-                                                    $queryFilter = "SELECT * FROM tickets WHERE date_time BETWEEN '$filtered_start_date' AND '$filtered_end_date' 
-                                                    AND division = '$filtered_division'";
-
-                                                    $sqlFilter = $conn->query($queryFilter);
-                                                    if($sqlFilter) {
-                                                        while($row = mysqli_fetch_assoc($sqlFilter)){
-
-                                                        $filteredTicketId = $row['ticket_id'];
-                                                        $filteredDivision = $row['division'];
-                                                        $filteredName = $row['name'];
-                                                        $filteredIssue = $row['issue_type'];
-                                                        $filteredStatus = $row['status'];
-                                                        $filteredDate = $row['date_time'];
-
-                                                        ?>
-                                                        <tr>
-                                                            <td><?php echo $filteredTicketId;?></td>
-                                                            <td><?php echo $filteredDivision;?></td>
-                                                            <td><?php echo $filteredName;?></td>
-                                                            <td><?php echo $filteredIssue;?></td>
-                                                            <td><?php echo $filteredStatus;?></td>
-                                                            <td><?php echo $filteredDate ;?></td>
-                                                        </tr>
-                                                        <?php
-                                                        }
-                                                    }else{
-                                                        echo "Error: " . mysqli_error($conn);
-                                                    }
-                                                }
-                                            }
-                                        }else{
-                                            echo "<td> There is no data to be Displayed </td>";
-                                        }
-                                        
-                                    }else {
-                                        echo "<td>Error Displaying Data</td>";
-                                    }
-    
-                                ?>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br>
-                        <hr>
-                        <br>
-                        
-                        <div id="<?php echo $id; ?>" class="page-container">
-                        <div class="page-info">
-
-                        <?php 
-                            if(!isset($_GET['page-nr'])){
-                                $page = 1;
-                            }else{
-                                $page = $_GET['page-nr'];
-                            }
-                        ?>
-                            Showing <strong><?php echo $page;?></strong> of <?php echo $pages;?> pages
-                        </div>
-
-                        <div class="pagination">
-                            <a href="?page-nr=1">First</a>
-
-                            <?php 
-                                if(isset($_GET['page-nr']) && $_GET['page-nr'] > 1) {
-                                    ?>
-                                    <a href="?page-nr=<?php echo $_GET['page-nr'] - 1; ?>">Previous</a>
-                                <?php
-                                }else{
-                                    ?>
-                                    <a> Previous</a>
-                                    <?php
-                                }
-                            ?>
-
-                            <div class="page-numbers">
-
-                                <?php 
-                                    for($counter = 1; $counter <= $pages; $counter++){
-                                        ?>
-                                            <a href="?page-nr=<?php echo $counter?>"><?php echo $counter; ?></a>
-                                        <?php
-                                    }
-                                ?>
+                            <div class="prog-container">
+                            <div class="progress-bar open"></div>
                             </div>
 
-                            <?php
-                                if(!isset($_GET['page-nr'])){
-                                    ?>
-                                        <a href="?page-nr=2">Next</a>
-                                    <?php
-                                }else{
-                                    if($_GET['page-nr'] >= $pages){
-                                        ?>
-                                        <a>Next</a>
-                                        <?php
-                                    }else{
-                                        ?>
-                                        <a href="?page-nr=<?php echo $_GET['page-nr'] + 1; ?>">Next</a>
-                                        <?php
-                                    }
-                                }
-                            ?>
-                            <!-- <a href="">Next</a> -->
-                            <a href="?page-nr=<?php echo $pages;?>">Last</a>
+                            <span class="value"><?php echo $openCount; ?> / <?php echo $totalCount;?></span>
                         </div>
+
+                        <div class="progress-bars G">
+                            <span class="label">On-going</span>
+
+                            <div class="prog-container">
+                            <div class="progress-bar onGoing"></div>
+                            </div>
+                            <span class="value"><?php echo $onGoingCount; ?> / <?php echo $totalCount;?></span>
                         </div>
+
+                        <div class="progress-bars C">
+                            <span class="label">Closed</span>
+
+                            <div class="prog-container">
+                            <div class="progress-bar closed"></div>
+                            </div>
+                            <span class="value"><?php echo $closedCount; ?> / <?php echo $totalCount;?></span>
+                        </div>
+                    </div>
+
+                    
                     </div>
                 </div>
             </div>
@@ -352,7 +212,21 @@
     <script src="assets/js/main.js"></script>
 
     <script>
-        // Prepare data for Pie Chart
+        var totalCount = <?php echo $totalCount; ?>;
+        var openCount = <?php echo $openCount; ?>;
+        var onGoingCount = <?php echo $onGoingCount; ?>;
+        var closedCount = <?php echo $closedCount; ?>;
+
+        var openProgressBar = document.querySelector('.progress-bar.open');
+        var onGoingProgressBar = document.querySelector('.progress-bar.onGoing');
+        var closedProgressBar = document.querySelector('.progress-bar.closed');
+
+        openProgressBar.style.width = (openCount / totalCount * 100) + '%';
+        onGoingProgressBar.style.width = (onGoingCount / totalCount * 100) + '%';
+        closedProgressBar.style.width = (closedCount / totalCount * 100) + '%';
+        
+
+
         var pieData = {
             labels: ["Open", "On-going", "Closed"],
             datasets: [{
@@ -371,22 +245,15 @@
             }]
         };
 
-        // Get canvas element
         var ctx = document.getElementById('pieChart').getContext('2d');
 
-        // Initialize Pie Chart
         var myPieChart = new Chart(ctx, {
             type: 'pie',
             data: pieData,
             options: {
-                // Add options here if needed
             }
         });
-
-        const links = document.querySelectorAll('.page-numbers > a');
-        const bodyId = parseInt(document.body.id) - 1;
-        links[bodyId].classList.add("active");
-
+        
     </script>
     
 </body>
