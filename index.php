@@ -140,67 +140,92 @@
                     </div>
                     <hr>
                     <br>
-                    <div class="form-filter">
-                        <form action="" method="POST">
-                            <label for="FORMStartDate">Start Date</label>
-                            <input type="date" name="FORMStartDate" id="FORMStartDate">
-                            <label for="FORMEndDate">End Date</label>
-                            <input type="date" name="FORMEndDate" id="FORMEndDate">
-                            <label for="FORMDivision">Division</label>
-                            <select name="FORMDivision" id="FORMDivision">
-                                <?php 
-                                
-                                $querySelect = "SELECT DISTINCT division FROM tickets";
-                                $categories = mysqli_query($conn, $querySelect);
-                                while($result = mysqli_fetch_array($categories)) { 
-                                    echo "<option value='".$result["division"]."'>".$result["division"]."</option>";
-                                } 
-                                
-                                ?>
-                            </select>
-                            <div class="filter">
-                            <button type="submit" name="FORMFilter">Filter</button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="form-filter">
+                            <form action="" method="POST">
+                                <label for="FORMStartDate">Start Date</label>
+                                <input type="date" name="FORMStartDate" id="FORMStartDate">
+                                <label for="FORMEndDate">End Date</label>
+                                <input type="date" name="FORMEndDate" id="FORMEndDate">
+                                <label for="FORMDivision">Division</label>
+                                <select name="FORMDivision" id="FORMDivision">
+                                    <?php 
+
+                                    $querySelect = "SELECT DISTINCT division FROM tickets";
+                                    $categories = mysqli_query($conn, $querySelect);
+                                    while($result = mysqli_fetch_array($categories)) { 
+                                        echo "<option value='".$result["division"]."'>".$result["division"]."</option>";
+                                    } 
+                                    
+                                    ?>
+                                </select>
+                                <div class="filter">
+                                <button type="submit" name="FORMFilter">Filter</button>
+                                </div>
+                            </form>
+                        </div>
 
                     <br>
 
-                    <div class="hr-bar-graph">
                         <div class="hr-bar-graph">
-                        <div class="progress-bars">
-                            <span class="label">Open</span>
+                            <div class="hr-bar-graph">
+                            <div class="progress-bars">
+                                <span class="label">Open</span>
 
-                            <div class="prog-container">
-                            <div class="progress-bar open"></div>
+                                <div class="prog-container">
+                                <div class="progress-bar open"></div>
+                                </div>
+
+                                <span class="value"><?php echo $openCount; ?> / <?php echo $totalCount;?></span>
                             </div>
 
-                            <span class="value"><?php echo $openCount; ?> / <?php echo $totalCount;?></span>
-                        </div>
+                            <div class="progress-bars G">
+                                <span class="label">On-going</span>
 
-                        <div class="progress-bars G">
-                            <span class="label">On-going</span>
-
-                            <div class="prog-container">
-                            <div class="progress-bar onGoing"></div>
+                                <div class="prog-container">
+                                <div class="progress-bar onGoing"></div>
+                                </div>
+                                <span class="value"><?php echo $onGoingCount; ?> / <?php echo $totalCount;?></span>
                             </div>
-                            <span class="value"><?php echo $onGoingCount; ?> / <?php echo $totalCount;?></span>
-                        </div>
 
-                        <div class="progress-bars C">
-                            <span class="label">Closed</span>
+                            <div class="progress-bars C">
+                                <span class="label">Closed</span>
 
-                            <div class="prog-container">
-                            <div class="progress-bar closed"></div>
+                                <div class="prog-container">
+                                <div class="progress-bar closed"></div>
+                                </div>
+                                <span class="value"><?php echo $closedCount; ?> / <?php echo $totalCount;?></span>
                             </div>
-                            <span class="value"><?php echo $closedCount; ?> / <?php echo $totalCount;?></span>
                         </div>
-                    </div>
-
                     
                     </div>
                 </div>
             </div>
+
+            <div class="priority-container">
+                <div class="priority-ticket">
+                    <div class="head">
+                        <div>
+                        <h3>Priority Tickets</h3>
+                        </div>
+                        <div>
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                    </div>
+                    <hr>
+                    <br>
+                    <div class="display-tickets">
+                        <!-- =========== Mula Dito ============== -->
+
+                        
+                        <!-- =========== Gang Mula Dito ============== -->
+                                
+
+                    </div>
+                </div>
+            </div>
+
+            
+
         </main>
     
     <!-- ================ END OF MAIN CONTENT ================== -->
@@ -225,8 +250,6 @@
         onGoingProgressBar.style.width = (onGoingCount / totalCount * 100) + '%';
         closedProgressBar.style.width = (closedCount / totalCount * 100) + '%';
         
-
-
         var pieData = {
             labels: ["Open", "On-going", "Closed"],
             datasets: [{
